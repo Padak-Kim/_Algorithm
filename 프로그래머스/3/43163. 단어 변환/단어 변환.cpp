@@ -42,10 +42,9 @@ void Dfs(string begin, string target, vector<string> words, int cnt)
 }
 
 int solution(string begin, string target, vector<string> words) {
-    if (find(words.begin(), words.end(), target) == words.end())
-        return 0;
     visited = vector<bool>(words.size(), false);
     Dfs(begin, target, words, 0);
     
+    if (min_answer == 999) return 0;
     return min_answer;
 }
