@@ -1,45 +1,32 @@
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <queue>
-
+#include <iostream>
 using namespace std;
 
 int solution(vector<int> scoville, int K) {
-    int count = 0;
-    bool flag = true;
-    priority_queue<int, vector<int>, greater<int>> minHeap;
+    int answer = 0;
+    priority_queue<int, vector<int>, greater<int>> pq;
     
     for(int i = 0; i < scoville.size(); i++)
+        pq.push(scoville[i]);
+    
+    while (pq.size() >= 2)
     {
-        minHeap.push(scoville[i]);
+        int food = pq.top(); pq.pop();
         
-        if (K > scoville[i])
-        {
-            flag = false;
-        }
+        if (food >= K)
+            break;
+        
+        int newFood = food + pq.top() * 2;
+        pq.pop();
+        pq.push(newFood);
+        answer++;
     }
     
-    if (flag)
-    {
-        return count; // 0
-    }
+    if (!pq.empty() && pq.top() < K)
+        return -1;
     
-    while(minHeap.size() > 1)
-    {
-        int min1 = minHeap.top();
-        minHeap.pop();
-        int min2 = minHeap.top();
-        minHeap.pop();
-        
-        int mix = min1 + (min2 * 2);
-        minHeap.push(mix);
-        count++;
-        
-        if (minHeap.top() >= K)
-        {
-            return count;
-        }       
-    }
-    
-    return -1;
+    return answer;
 }
