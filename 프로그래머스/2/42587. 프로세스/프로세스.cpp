@@ -1,37 +1,37 @@
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
     int answer = 0;
-    queue<int> q;
-    vector<int> sortVec;
-    for (int i = 0; i < priorities.size(); i++)
+    queue<pair<int, int>> q;
+    priority_queue<int> pq;
+    
+    for(int i = 0; i < priorities.size(); i++)
     {
-        q.push(i);
+        q.push({priorities[i], i});
+        pq.push(priorities[i]);
     }
     
+    int cnt = 0;
     while(!q.empty())
     {
-        int now_index = q.front();
-        q.pop();
-        if (priorities[now_index] == *max_element(priorities.begin(), priorities.end()))
+        auto [pri, idx] = q.front(); q.pop();
+        
+        if (pq.top() == pri)
         {
-            sortVec.push_back(now_index);
-            priorities[now_index] = 0;
+            pq.pop();
+            answer++;
+            if (idx == location) break;
         }
         else
         {
-            q.push(now_index);
+            q.push({pri, idx});
         }
-    }
-    
-    for (int i = 0; i < sortVec.size(); i++)
-    {
-        if (sortVec[i] == location) return i+1;
+            
     }
     return answer;
 }
