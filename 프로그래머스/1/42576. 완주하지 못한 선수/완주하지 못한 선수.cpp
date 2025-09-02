@@ -1,25 +1,28 @@
 #include <string>
 #include <vector>
 #include <set>
-
+#include <iostream>
 using namespace std;
-
-multiset<string> ms;
 
 string solution(vector<string> participant, vector<string> completion) {
     string answer = "";
+    multiset<string> ms;
     
-    for(int i = 0; i < participant.size(); i++)
+    for (auto& s : participant)
     {
-        ms.insert(participant[i]);
+        ms.insert(s);
+    }
+    for (auto& s : completion)
+    {
+        auto it = ms.find(s);
+        if (it != ms.end())
+            ms.erase(it);
     }
     
-    for (int j = 0; j < completion.size(); j++)
+    for(auto iter = ms.begin(); iter != ms.end(); ++iter)
     {
-        ms.erase(ms.find(completion[j]));
+        cout << *iter << endl;
+        answer = *iter;
     }
-    
-    answer = *ms.begin();
-    
     return answer;
 }
