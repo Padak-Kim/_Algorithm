@@ -15,7 +15,7 @@
 using namespace std;
 
 int answer = INT_MAX;
-void DFS(int n, vector<vector<int>>& S, vector<int>& join, vector<int> sTeam)
+void DFS(int n, vector<vector<int>>& S, vector<int>& join, vector<int>& sTeam)
 {
 	int T = n / 2;
 
