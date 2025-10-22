@@ -16,15 +16,7 @@ int solution(string str)
     }
     
     if (!s.empty())
-    {
-        while(!s.empty())
-        {
-            char c = s.top(); s.pop();
-            
-            if (c != s.top())
-                return 0; 
-        }
-        
+    {     
         return 0;
     }
     else
