@@ -21,8 +21,6 @@ vector<int> solution(vector<int> prices) {
         }
         else // 가격이 떨어짐
         {
-            answer[idx]++;
-            s.pop();
             while(!s.empty())
             {
                 idx = s.top();
