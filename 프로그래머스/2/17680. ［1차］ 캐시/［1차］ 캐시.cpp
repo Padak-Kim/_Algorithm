@@ -1,45 +1,53 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
+#include <iostream>
 #include <list>
-
+#include <algorithm>
 using namespace std;
 
 int solution(int cacheSize, vector<string> cities) {
     int answer = 0;
+    if (cacheSize == 0)
+        return cities.size() * 5;
     
-    list<string> li;
-	unordered_map<string, list<string>::iterator> um;
-    
-    if (cacheSize == 0) return cities.size() * 5;
-    for(int i = 0 ; i < cities.size(); i++)
+    unordered_map<string, list<string>::iterator> um; // cityName, whereInList
+    list<string> cacheList;
+    int cnt = 0;
+    for(auto& city : cities)
     {
-        string city = cities[i];
         transform(city.begin(), city.end(), city.begin(), ::tolower);
-        auto it = um.find(city);
-        if (it != um.end()) // 캐시에 있음
-        {
-            // 삭제 후 뒤로 보내기
-            li.erase(it->second);
-            um.erase(city);
-            answer += 1;
-        }
-        else
-        {
-            // 캐시에 없음
-            // 꽉 찼으면 가장 오래된거 제거
-            if (li.size() >= cacheSize)
-            {
-                um.erase(*li.begin());
-                li.pop_front();   
-            }
-            answer += 5;    
-        }
+        // 첫 도시
         
-        // 새로 삽입
-        li.push_back(city);
-        um[city] = prev(li.end());
+        auto it = um.find(city);
+        // 새로운 도시 들어왔을 때
+        if (it == um.end())
+        {
+            if (cacheList.size() == cacheSize)
+            {
+                // 제일 오래된 것 삭제
+                string oldCity = cacheList.back();
+                um.erase(oldCity);
+                cacheList.pop_back();
+            }
+
+            // 새로운 도시 유입
+            cacheList.push_front(city);
+            um.insert({city, cacheList.begin()});
+            answer += 5;
+        }
+        else // 캐시안에 있는 것 들어왔을 때
+        {
+            // 캐시안에 있는 것 삭제하고 다시 생성
+            cacheList.erase(it->second);
+            cacheList.push_front(city);
+
+            um[city] = cacheList.begin();
+            answer++;
+
+
+            //cout << city << " 캐시가 반환됐습니다. " << answer << endl;
+        }
     }
     return answer;
 }
