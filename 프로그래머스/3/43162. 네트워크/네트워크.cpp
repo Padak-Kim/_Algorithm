@@ -4,7 +4,7 @@
 using namespace std;
 int answer = 0;
 vector<bool> visited;
-void dfs(int n, vector<vector<int>> computers, int index)
+void dfs(int n, vector<vector<int>>& computers, int index)
 {
     // 방문
     visited[index] = true;
