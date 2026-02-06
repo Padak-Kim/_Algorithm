@@ -14,8 +14,8 @@ int solution(string s) {
     {     
         string prev = s.substr(0, l);
         int count = 1;  
+        string word = "";
         
-        int length = 0;
         // l크기만큼 자르기
         for(int i = l; i < n; i += l)
         {
@@ -28,19 +28,19 @@ int solution(string s) {
             else
             {
                 if (count > 1)
-                    length += (int)to_string(count).size();
-                length += (int)prev.size();
+                    word += to_string(count);
+                word += prev;
                 
                 prev = cur;
                 count = 1;
             }
         }
         
-        if (count > 1) 
-            length += (int)to_string(count).size(); 
-        length += (int)prev.size(); 
+        if (count > 1)
+            word += to_string(count);
+        word += prev;
         
-        bestlength = min(bestlength, length);
+        bestlength = min(bestlength, (int)word.size());
     }
     
     answer = bestlength;
